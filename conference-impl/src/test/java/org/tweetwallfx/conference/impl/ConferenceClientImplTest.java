@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 TweetWallFX
+ * Copyright (c) 2022-2023 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,10 @@
  */
 package org.tweetwallfx.conference.impl;
 
-import org.junit.jupiter.api.Disabled;
 import org.tweetwallfx.conference.test.ConferenceClientTestBase;
 import org.tweetwallfx.config.Configuration;
 
-@Disabled
+// @org.junit.jupiter.api.Disabled
 public class ConferenceClientImplTest extends ConferenceClientTestBase {
 
     static {
@@ -35,10 +34,10 @@ public class ConferenceClientImplTest extends ConferenceClientTestBase {
                 .getConfigTyped(
                         ConferenceClientSettings.CONFIG_KEY,
                         ConferenceClientSettings.class)
-                .getEventBaseUri() + "/rooms");
+                .getEventBaseUri() + "rooms");
     }
 
     public ConferenceClientImplTest() {
-        super(ConferenceClientImpl.class, "friday", "4706", "1904");
+        super(ConferenceClientImpl.class, "friday", "1156", "32668");
     }
 }

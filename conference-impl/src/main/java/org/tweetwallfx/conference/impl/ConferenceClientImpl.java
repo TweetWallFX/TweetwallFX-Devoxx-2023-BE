@@ -39,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.tweetwallfx.conference.api.ConferenceClient;
 import org.tweetwallfx.conference.api.Identifiable;
+import org.tweetwallfx.conference.api.RatedTalk;
 import org.tweetwallfx.conference.api.RatingClient;
 import org.tweetwallfx.conference.api.Room;
 import org.tweetwallfx.conference.api.ScheduleSlot;
@@ -47,6 +48,7 @@ import org.tweetwallfx.conference.api.Speaker;
 import org.tweetwallfx.conference.api.Talk;
 import org.tweetwallfx.conference.api.Track;
 import org.tweetwallfx.conference.spi.DateTimeRangeImpl;
+import org.tweetwallfx.conference.spi.RatedTalkImpl;
 import org.tweetwallfx.conference.spi.RoomImpl;
 import org.tweetwallfx.conference.spi.ScheduleSlotImpl;
 import org.tweetwallfx.conference.spi.SessionTypeImpl;
@@ -54,30 +56,33 @@ import org.tweetwallfx.conference.spi.SpeakerImpl;
 import org.tweetwallfx.conference.spi.TalkImpl;
 import org.tweetwallfx.conference.spi.TrackImpl;
 import org.tweetwallfx.conference.spi.util.RestCallHelper;
+import org.tweetwallfx.config.Configuration;
 
-public class ConferenceClientImpl implements ConferenceClient {
+public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(ConferenceClientImpl.class);
-    private final String baseUri;
+    private final ConferenceClientSettings config;
     private final Map<String, SessionType> sessionTypes;
     private final Map<String, Room> rooms;
     private final Map<String, Track> tracks;
 
     public ConferenceClientImpl() {
-        this.baseUri = "https://dvbe22.cfp.dev/api/public/";
-        this.sessionTypes = RestCallHelper.readOptionalFrom(baseUri + "session-types", listOfMaps())
+        this.config = Configuration.getInstance().getConfigTyped(
+                ConferenceClientSettings.CONFIG_KEY,
+                ConferenceClientSettings.class);
+        this.sessionTypes = RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "session-types", listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertSessionType)
                 .collect(Collectors.toMap(Identifiable::getId, Function.identity()));
         LOG.info("SessionType IDs: {}", sessionTypes.keySet());
-        this.rooms = RestCallHelper.readOptionalFrom(baseUri + "rooms", listOfMaps())
+        this.rooms = RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "rooms", listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertRoom)
                 .collect(Collectors.toMap(Identifiable::getId, Function.identity()));
         LOG.info("Room IDs: {}", rooms.keySet());
-        this.tracks = RestCallHelper.readOptionalFrom(baseUri + "tracks", listOfMaps())
+        this.tracks = RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "tracks", listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertTrack)
@@ -87,7 +92,7 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public String getName() {
-        return "DEVOXX_BE_2022";
+        return "DEVOXX_BE_2023";
     }
 
     @Override
@@ -102,7 +107,7 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public List<ScheduleSlot> getSchedule(final String conferenceDay) {
-        return RestCallHelper.readOptionalFrom(baseUri + "schedules/" + conferenceDay, listOfMaps())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "schedules/" + conferenceDay, listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertScheduleSlot)
@@ -111,7 +116,7 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public List<ScheduleSlot> getSchedule(final String conferenceDay, final String roomName) {
-        return RestCallHelper.readOptionalFrom(baseUri + "schedules/" + conferenceDay + '/' + roomName, listOfMaps())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "schedules/" + conferenceDay + '/' + roomName, listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertScheduleSlot)
@@ -120,7 +125,7 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public List<Speaker> getSpeakers() {
-        return RestCallHelper.readOptionalFrom(baseUri + "speakers", listOfMaps())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertSpeaker)
@@ -129,13 +134,13 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public Optional<Speaker> getSpeaker(final String speakerId) {
-        return RestCallHelper.readOptionalFrom(baseUri + "speakers/" + speakerId, map())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers/" + speakerId, map())
                 .map(this::convertSpeaker);
     }
 
     @Override
     public List<Talk> getTalks() {
-        return RestCallHelper.readOptionalFrom(baseUri + "talks", listOfMaps())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "talks", listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertTalk)
@@ -144,7 +149,7 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public Optional<Talk> getTalk(final String talkId) {
-        return RestCallHelper.readOptionalFrom(baseUri + "talks/" + talkId, map())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "talks/" + talkId, map())
                 .map(this::convertTalk);
     }
 
@@ -155,8 +160,27 @@ public class ConferenceClientImpl implements ConferenceClient {
 
     @Override
     public Optional<RatingClient> getRatingClient() {
-        // TODO: add implementation
-        return Optional.empty();
+        return Optional.of(config)
+                .map(ConferenceClientSettings::getVotingResultsToken)
+                .map(_ignored_ -> this);
+    }
+
+    @Override
+    public List<RatedTalk> getRatedTalks(final String conferenceDay) {
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "ratings/" + conferenceDay.toLowerCase(Locale.ENGLISH).substring(0, 3) + '/' + config.getVotingResultsToken(), listOfMaps())
+                .orElse(List.of())
+                .stream()
+                .map(this::convertRatedTalk)
+                .toList();
+    }
+
+    @Override
+    public List<RatedTalk> getRatedTalksOverall() {
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "ratings/" + config.getVotingResultsToken(), listOfMaps())
+                .orElse(List.of())
+                .stream()
+                .map(this::convertRatedTalk)
+                .toList();
     }
 
     private static GenericType<List<Map<String, Object>>> listOfMaps() {
@@ -167,6 +191,15 @@ public class ConferenceClientImpl implements ConferenceClient {
     private static GenericType<Map<String, Object>> map() {
         return new GenericType<Map<String, Object>>() {
         };
+    }
+
+    private RatedTalk convertRatedTalk(final Map<String, Object> input) {
+        LOG.debug("Converting to RatedTalk: {}", input);
+        return RatedTalkImpl.builder()
+                .withAverageRating(retrieveValue(input, "avgRatings", Number.class, Number::doubleValue))
+                .withTotalRating(retrieveValue(input, "totalRatings", Number.class, Number::intValue))
+                .withTalk(retrieveValue(input, "id", Integer.class, talkId -> getTalk(Integer.toString(talkId)).get()))
+                .build();
     }
 
     private Room convertRoom(final Map<String, Object> input) {
@@ -209,7 +242,7 @@ public class ConferenceClientImpl implements ConferenceClient {
                 .withDuration(retrieveValue(input, "duration", Number.class, n -> Duration.ofMinutes(n.longValue())))
                 .withId(retrieveValue(input, "id", Number.class, Number::toString))
                 .withName(retrieveValue(input, "name", String.class))
-                .withPause(retrieveValue(input, "isPause", Boolean.class))
+                .withPause(retrieveValue(input, "pause", Boolean.class))
                 .build();
     }
 
