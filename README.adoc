@@ -2,7 +2,7 @@
 
     The MIT License (MIT)
 
-    Copyright (c) 2022 TweetWallFX
+    Copyright (c) 2022-2023 TweetWallFX
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,8 @@
 
 ////
 
-= JavaFX based TweetWalls for <YOUR_NAME_HERE>
-:project-full-path: TweetWallFX/<YOUR_PATH_HERE>
+= JavaFX based TweetWalls for Devoxx BE 2023
+:project-full-path: TweetWallFX/TweetwallFX-Devoxx-2023-BE
 :github-branch: main
 
 image:https://img.shields.io/badge/license-MIT-blue.svg["MIT License", link="https://github.com/{project-full-path}/blob/{github-branch}/LICENSE"]
