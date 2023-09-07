@@ -1,0 +1,193 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2019 TweetWallFX
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+@font-face {
+    font-family: 'BebasNeue';
+    src: url('BebasNeue.otf');
+}
+
+@font-face {
+    font-family: 'BebasNeue Bold';
+    src: url('BebasNeue-Bold.otf');
+}
+
+@font-face {
+    font-family: 'Noto Emoji';
+    src: url('NotoEmoji-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Twitter Color Emoji';
+    src: url('TwitterColorEmoji-SVGinOT.ttf');
+}
+
+.root {
+    -fx-font-family: 'System';
+    devoxx_gradient: linear-gradient(to bottom right, #e55630, #f68b1f);
+}
+
+.text {
+    -fx-font-smoothing-type: gray;
+}
+
+.statusline {
+    /*-fx-font: 12px "Calibri";*/
+    -fx-text-fill: red !important;
+}
+
+.wordle {
+    -fx-graphic: url(Devoxx-Logo-White.png);
+    -fx-background-color: black;
+    -fx-background-graphic: url(Cinema-backdrop-Devoxx-BE-2019-4K-noLogos.png);
+    -fx-second-graphic: url(jug-bodensee-logo-weiss3-gross.png);
+    -fx-display-tag-num: 25;
+    /*-fx-font: 12pt "BebasNeue";*/
+    -fx-font-size-min: 36;
+    -fx-font-size-max: 72;
+    -fx-tweet-font-size: 54;
+}
+
+.wordle .bg-image {
+    -fx-opacity: 0.4;
+}
+
+.wordle .secondlogo {
+    -fx-scale-x: 0.4;
+    -fx-scale-y: 0.4;
+    /*position: relative;*/
+    /*-fx-alignment: BOTTOM_RIGHT;*/
+    /*-fx-translate-x: +900;
+    -fx-translate-y: +100;*/
+}
+
+.wordle .logo {
+    /*visibility: hidden;*/
+    /*    -fx-scale-x: 0.7;
+        -fx-scale-y: 0.7;*/
+    -fx-translate-x: +150;
+    -fx-translate-y: -150;
+}
+
+.wordle .tag {
+    /*-fx-font-family: "Calibri";*/
+    -fx-fill:blanchedalmond  !important;
+    /*    -fx-stroke: black;
+        -fx-stroke-width: 0.5;    */
+    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );*/
+    /*-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.7) , 6, 0.0 , 0 , 2 );*/
+}
+
+.wordle .name {
+    -fx-font-size: 36px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.wordle .handle {
+    -fx-font-size: 28px;
+    -fx-text-fill: white;
+}
+
+.tweetUsername {
+    -fx-font: 1em 'Twitter Color Emoji';
+    -fx-fill: derive(blanchedalmond, +5%);
+}
+
+.tweetText {
+    -fx-font: 1.2em 'Twitter Color Emoji';
+    /*    -fx-font-family: 'Twitter Color Emoji';
+        -fx-font-size: 48pt;    */
+    -fx-fill: #060b33; /* derive(blanchedalmond, -5%);    */
+}
+
+/*.tweetFlow {
+    -fx-font-family: 'Twitter Color Emoji';
+    -fx-font-size: 1.5em;
+    -fx-fill: derive(blanchedalmond, -5%);
+}*/
+
+.tweetDisplay {
+    -fx-background-color: devoxx_gradient;
+    -fx-background-radius: 5;
+    /*    -fx-border-color: black;
+        -fx-border-style: solid;
+        -fx-border-width: 0pt 0pt 1pt 0pt;
+        -fx-border-radius: 5pt;
+        -fx-border-insets: 5pt;*/
+}
+
+.tweetProfileImage {
+    /*    -fx-border-color: #060b33;
+        -fx-border-style: solid;*/
+    /*    -fx-border-width: 0pt 0pt 0pt 0pt;
+        -fx-border-radius: 2pt;
+        -fx-border-insets: 2pt;*/
+}
+
+.scheduleSession {
+    -fx-background-color: devoxx_gradient;
+    -fx-background-radius: 5;
+
+    -fx-hgap: 10pt;
+    -fx-vgap: 8pt;
+    -fx-alignment: top-left;
+    -fx-padding: 5pt;
+    /*-fx-effect: dropshadow(three-pass-box, #060b33, 10, 0, 2, 2);*/
+    -fx-grid-lines-visible: false;
+}
+
+.scheduleSession .room {
+    -fx-text-fill: #060b33;
+    -fx-font-weight: bold;
+    -fx-font-size: 14pt;
+}
+
+.scheduleSession > .sessionBottomPane > .titlePane > .title {
+    -fx-text-fill: #060b33;
+    -fx-font-size: 12pt;
+}
+
+.scheduleSession > .sessionTopPane > .speakerName {
+    -fx-text-fill: blanchedalmond;
+    /*-fx-font-size: 12pt;*/
+}
+
+.scheduleSession .favoriteGlyph {
+    -glyph-name: "HEART";
+    -glyph-size: 10pt;
+    -fx-fill: #060b33;
+}
+
+.scheduleSession .favoriteCount {
+    -fx-text-fill: #060b33;
+    -fx-font-size: 10pt;
+}
+
+.schedule > .title {
+    -fx-background-color: devoxx_gradient;
+    -fx-background-radius: 10;
+    -fx-text-fill: #060b33;
+    -fx-font-size: 20pt;
+    -fx-font-weight: bold;
+}
