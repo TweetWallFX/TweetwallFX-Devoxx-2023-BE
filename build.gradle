@@ -403,3 +403,16 @@ tasks.register('createFolders') {
         }
     }
 }
+
+subprojects { project ->
+    if (!project.projectDir.name.contains('-') &&
+        new File(project.projectDir, 'src/main/resources').listFiles().collect().find{it.name.endsWith('.css')}) {
+        plugins.withType(JavaPlugin) {
+            rootProject.tasks.register('run' + project.projectDir.name.capitalize()) {
+                group = 'Runner'
+                description = 'Runs the ' + project.projectDir.name.capitalize() + ' Tweetwall'
+                dependsOn project.path + ':run'
+            }
+        }
+    }
+}
