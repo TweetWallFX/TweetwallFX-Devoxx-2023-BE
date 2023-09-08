@@ -29,7 +29,6 @@ application {
 }
 
 tasks.withType(JavaExec).configureEach {
-    main mainClassName
 //    jvmArgs '-Dorg.tweetwallfx.scheduledata.day=friday'
 //    jvmArgs '-Dorg.tweetwallfx.scheduledata.time=10:00Z'
 }
