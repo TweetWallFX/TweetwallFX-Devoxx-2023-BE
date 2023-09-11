@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2022 TweetWallFX
+ * Copyright (c) 2022-2023 TweetWallFX
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -57,9 +57,11 @@ public class ConferenceClientSettings {
      *
      * @param eventBaseUri the Event Base URI
      */
-    public void setBaseEventUri(final String eventBaseUri) {
+    public void setEventBaseUri(final String eventBaseUri) {
         Objects.requireNonNull(eventBaseUri, "eventBaseUri must not be null!");
-        this.eventBaseUri = eventBaseUri;
+        this.eventBaseUri = eventBaseUri.endsWith("/")
+                ? eventBaseUri
+                : eventBaseUri + '/';
     }
 
     /**

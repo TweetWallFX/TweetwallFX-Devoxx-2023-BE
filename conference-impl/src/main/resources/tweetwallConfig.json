@@ -1,0 +1,6 @@
+{
+    "conferenceClient": {
+        "eventBaseUri": "https://dvbe23.cfp.dev/api/public",
+        "votingResultsToken": "PutYourActualTokenHere"
+    }
+}
