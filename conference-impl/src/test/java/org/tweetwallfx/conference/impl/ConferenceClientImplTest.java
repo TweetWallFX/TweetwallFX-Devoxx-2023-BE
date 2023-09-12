@@ -26,7 +26,7 @@ package org.tweetwallfx.conference.impl;
 import org.tweetwallfx.conference.test.ConferenceClientTestBase;
 import org.tweetwallfx.config.Configuration;
 
-// @org.junit.jupiter.api.Disabled
+@org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable(named = "CI", matches=".*")
 public class ConferenceClientImplTest extends ConferenceClientTestBase {
 
     static {
