@@ -283,6 +283,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
                         // or by having the session type object as value
                         retrieveValue(input, "sessionType", Map.class,
                                 m -> retrieveValue(m, "id", Number.class, Number::toString)))))
+                .withFavoriteCount(retrieveValue(input, "totalFavourites", Number.class, Number::intValue))
                 .withLanguage(Locale.ENGLISH)
                 .withScheduleSlots(retrieveValue(input, "timeSlots", List.class,
                         list -> ((List<?>) list).stream()
