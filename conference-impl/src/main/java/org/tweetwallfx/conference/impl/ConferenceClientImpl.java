@@ -256,6 +256,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
                 .withFullName(String.format("%s %s",
                         retrieveValue(input, "firstName", String.class),
                         retrieveValue(input, "lastName", String.class)))
+                .withCompany(retrieveValue(input, "company", String.class))
                 .withAvatarURL(retrieveValue(input, "imageUrl", String.class))
                 .withTalks(retrieveValue(input, "talks", List.class,
                         list -> ((List<?>) list).stream()
