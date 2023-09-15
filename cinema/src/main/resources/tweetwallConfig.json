@@ -1,59 +1,39 @@
 {
     "tweetwall": {
-        "query": "<YOUR_QUERY>",
-        "title": "The JavaFX Cinema Tweetwall for <YOUR_NAME_HERE>!",
+        "query": "#devoxx",
+        "title": "The JavaFX Cinema Tweetwall for Devoxx Belgium 2023!",
         "stylesheetResource": "tweetwall.css"
     },
 
     "stepEngine": {
-        "dataProviderSettings": [
-            {
-                "dataProviderClassName": "org.tweetwallfx.stepengine.dataproviders.TweetStreamDataProvider",
-                "config": {
-                    "hideRetweets": true,
-                    "historySize": 50,
-                    "maxTweets": 100
-                }
-            }
-        ],
         "steps": [
             {
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
                 "config": {
                     "layoutX": 35,
                     "layoutY": 215,
-                    "width": 980,
-                    "sessionHeight": 150,
+                    "width": 1860,
+                    "sessionHeight": 200,
                     "showAvatar": true,
                     "avatarArcSize": 16,
-                    "avatarSize": 50,
+                    "avatarSize": 60,
                     "avatarSpacing": 4,
                     "showFavourite": true,
-                    "stepDuration": 500
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.InfiniteScrollingTweetsStep",
-                "config": {
-                    "layoutX": 1050,
-                    "layoutY": 215,
-                    "height": 630,
-                    "tweetGap": 10,
-                    "tweetWidth": 200,
-                    "stepDuration": 5000,
-                    "speed": 25,
-                    "columns": 3,
-                    "columnGap": 10,
-                    "numberOfTweets": 50,
-                    "stepIdentifier": "rightHandSideInfiniteScrolling",
-                    "vOffset": 400
+                    "stepDuration": 500,
+                    "circularAvatar": true,
+                    "compressedAvatars": true,
+                    "compressedAvatarsLimit": 4,
+                    "showTags": true,
+                    "columns": 4,
+                    "autoSeparateRoomTypes": true,
+                    "showCompanyName": true
                 }
             },
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
                     "unit": "SECONDS",
-                    "amount": "30"
+                    "amount": "5"
                 }
             },
             {
@@ -67,69 +47,29 @@
                 "config": {
                     "layoutX": 35,
                     "layoutY": 215,
-                    "width": 980,
-                    "sessionHeight": 150,
+                    "width": 1860,
+                    "sessionHeight": 200,
                     "showAvatar": true,
                     "avatarArcSize": 16,
-                    "avatarSize": 50,
+                    "avatarSize": 60,
                     "avatarSpacing": 4,
                     "showFavourite": true,
-                    "stepDuration": 500
+                    "stepDuration": 500,
+                    "circularAvatar": true,
+                    "compressedAvatars": true,
+                    "compressedAvatarsLimit": 4,
+                    "showTags": true,
+                    "columns": 4,
+                    "autoSeparateRoomTypes": true,
+                    "showCompanyName": true
                 }
             },
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
                     "unit": "SECONDS",
-                    "amount": "15"
+                    "amount": "60"
                 }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.stepengine.steps.GenericShutdownStep",
-                "config": {
-                    "stepToTerminate": "rightHandSideInfiniteScrolling"
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.FadeInCloudStep",
-                "config": {
-                    "layoutX": 1100,
-                    "layoutY": 210,
-                    "width": 800,
-                    "height": 550,
-                    "stepDuration": 15000
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
-                "config": {
-                    "nodeSelector": "#scheduleNode"
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
-                "config": {
-                    "layoutX": 35,
-                    "layoutY": 215,
-                    "width": 980,
-                    "sessionHeight": 150,
-                    "showAvatar": true,
-                    "avatarArcSize": 16,
-                    "avatarSize": 50,
-                    "avatarSpacing": 4,
-                    "showFavourite": true,
-                    "stepDuration": 500
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
-                "config": {
-                    "unit": "SECONDS",
-                    "amount": "15"
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.CloudFadeOutStep"
             },
             {
                 "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",

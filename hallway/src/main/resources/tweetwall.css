@@ -163,19 +163,19 @@
     -fx-font-size: 20pt;
 }
 
-.scheduleSession > .sessionBottomPane > .titlePane > .title {
-    -fx-text-fill: #060b33;
-    -fx-font-size: 18pt;
+.scheduleSession > .sessionBottomPane .emojiFlow {
+    -fx-fill: #060b33;
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
 }
 
-.scheduleSession > .sessionTopPane > .times {
-    -fx-fill: #060b33;
-    -fx-font-size: 18pt;
+.scheduleSession > .sessionTopPane > .speakerNames {
+    -fx-alignment: "top-right"
 }
 
-.scheduleSession > .sessionTopPane > .speakerName {
-    -fx-fill: #060b33;
-    -fx-font-size: 18pt;
+.scheduleSession > .sessionTopPane > .speakerNames > .speakerName {
+    -fx-text-fill: blanchedalmond;
+    -fx-font-size: 10pt;
 }
 
 .scheduleSession .favoriteGlyph {
