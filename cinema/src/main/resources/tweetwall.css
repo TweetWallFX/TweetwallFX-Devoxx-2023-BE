@@ -45,6 +45,10 @@
 .root {
     -fx-font-family: 'System';
     devoxx_gradient: linear-gradient(to bottom right, #e55630, #f68b1f);
+    devoxx_gradient_opaque: linear-gradient(to bottom right, rgba(229, 86, 48, 0.85) , rgba(246, 139, 31, 0.85));
+    devoxx_light_font: blanchedalmond;
+    devoxx_dark_font: #060b33;
+    devoxx_font_color: devoxx_light_font;
 }
 
 .text {
@@ -59,7 +63,7 @@
 .wordle {
     -fx-graphic: none;
     -fx-background-color: black;
-    -fx-background-graphic: url(Cinema-backdrop-Devoxx-BE-2019-slim-format.png);
+    -fx-background-graphic: url(Devoxx-Be-23.png);
     /*-fx-second-graphic: url(jug-bodensee-logo-A-gross-white.png);*/
     -fx-display-tag-num: 25;
     /*-fx-font: 12pt "BebasNeue";*/
@@ -147,48 +151,85 @@
 }
 
 .scheduleSession {
-    -fx-background-color: devoxx_gradient;
+    -fx-background-color: devoxx_gradient_opaque;
     -fx-background-radius: 5;
-
     -fx-hgap: 10pt;
     -fx-vgap: 8pt;
     -fx-alignment: top-left;
     -fx-padding: 5pt;
-    /*-fx-effect: dropshadow(three-pass-box, #060b33, 10, 0, 2, 2);*/
+    -fx-opaque: 0.85;
     -fx-grid-lines-visible: false;
 }
 
 .scheduleSession .room {
-    -fx-text-fill: #060b33;
+    -fx-text-fill: blanchedalmond;
     -fx-font-weight: bold;
     -fx-font-size: 14pt;
 }
 
-.scheduleSession > .sessionBottomPane > .titlePane > .title {
-    -fx-text-fill: #060b33;
-    -fx-font-size: 13pt;
+.scheduleSession .times {
+    -fx-text-fill: blanchedalmond;
+    -fx-font-weight: normal;
+    -fx-font-size: 10pt;
 }
 
-.scheduleSession > .sessionTopPane > .speakerName {
+.scheduleSession > .sessionBottomPane > .centerFlow .emojiFlow {
+    -fx-fill: blanchedalmond;
+    -fx-font-size: 15pt;
+    -fx-font-weight: bold;
+}
+
+.scheduleSession > .sessionTopPane > .speakerNames {
+    -fx-alignment: "top-right"
+}
+
+.scheduleSession > .sessionTopPane > .speakerNames > .speakerName {
     -fx-text-fill: blanchedalmond;
-    -fx-font-size: 12pt;
+    -fx-font-size: 11pt;
+}
+
+.scheduleSession > .sessionTopPane > .speakerNames > .companyName {
+    -fx-text-fill: blanchedalmond;
+    -fx-font-size: 8pt;
 }
 
 .scheduleSession .favoriteGlyph {
     -glyph-name: "HEART";
     -glyph-size: 10pt;
-    -fx-fill: #060b33;
+    -fx-fill: blanchedalmond;
 }
 
 .scheduleSession .favoriteCount {
-    -fx-text-fill: #060b33;
+    -fx-text-fill: blanchedalmond;
     -fx-font-size: 10pt;
 }
 
 .schedule > .title {
-    -fx-background-color: devoxx_gradient;
+    -fx-background-color: devoxx_gradient_opaque;
     -fx-background-radius: 10;
-    -fx-text-fill: #060b33;
+    -fx-text-fill: blanchedalmond;
     -fx-font-size: 20pt;
     -fx-font-weight: bold;
+}
+
+.scheduleSession .sessionBottomPane .centerFlow {
+    -fx-spacing: 3pt;
+}
+
+.scheduleSession .sessionBottomPane .centerFlow .tagPane .tags  {
+    -fx-hgap: 8pt;
+    -fx-vgap: 4pt;
+    -fx-padding: 0 0 0 4;
+}
+
+.scheduleSession .sessionBottomPane .centerFlow .tagPane .tags .tagLabel {
+    -fx-font-size: 10pt;
+    -fx-text-fill: blanchedalmond;
+ /*   -fx-text-fill: #e55630; */
+ /*   -fx-background-color: black; */
+    -fx-border-color: blanchedalmond;
+    -fx-border-radius: 5 0 5 0;
+    -fw-border-with: 2pt;
+    -fx-background-radius: 5 5 5 5;
+    -fx-border-insets: -1 -4 -1 -4;
 }

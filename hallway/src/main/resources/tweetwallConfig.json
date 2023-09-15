@@ -1,7 +1,7 @@
 {
     "tweetwall": {
-        "query": "<YOUR_QUERY>",
-        "title": "The JavaFX Hallway Tweetwall for <YOUR_NAME_HERE>!",
+        "query": "#devoxx",
+        "title": "The JavaFX Hallway Tweetwall for Devoxx BE 2023!",
         "stylesheetResource": "tweetwall.css"
     },
 
@@ -12,6 +12,7 @@
                 "config": {
                     "layoutX": 103,
                     "layoutY": 100,
+                    "sessionHeight": 175,
                     "showAvatar": true,
                     "avatarArcSize": 16,
                     "avatarSize": 64,
