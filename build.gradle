@@ -51,14 +51,18 @@ dependencies {
     api platform('org.apache.logging.log4j:log4j-bom:2.20.0')
 
     constraints {
+        api 'com.github.spotbugs:spotbugs-annotations:4.7.3'
         api 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
         api 'org.slf4j:slf4j-api:2.0.9'
     }
 }
 
 allprojects {
+    int[] versionSplit = currentVersion.split('[.]').collect{it as int}
+    assert 3 == versionSplit.length : 'currentVersion property requires all three version parts (major, minor, patch)'
+
     group = mavenGroupName
-    version = currentVersion
+    version = String.format('release' == System.getenv('GITHUB_REF_NAME') ? '%d.%d.%d' : '%d.%d-SNAPSHOT', versionSplit)
     description = "${projectDescriptionBase} (${name})"
 
     repositories {
@@ -219,7 +223,7 @@ allprojects {
         }
 
         dependencies {
-            implementation 'com.github.spotbugs:spotbugs-annotations:4.7.3'
+            // get recommended versions from the platform project
             api platform(rootProject)
 
             javafx group: 'org.openjfx', name: 'javafx-base', version: '20.0.2', classifier: javaFxPlatform
