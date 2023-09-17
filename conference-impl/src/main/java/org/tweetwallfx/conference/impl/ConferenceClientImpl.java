@@ -125,7 +125,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<Speaker> getSpeakers() {
-        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps())
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps(), (a, b) -> {a.addAll(b); return a;})
                 .orElse(List.of())
                 .stream()
                 .map(this::convertSpeaker)
