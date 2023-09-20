@@ -59,7 +59,7 @@
 .wordle {
     -fx-graphic: none;
     -fx-background-color: black;
-    -fx-background-graphic: url(Cinema-backdrop-Devoxx-BE-2019.png);
+    -fx-background-graphic: url(DevoxxBelgium2023CinemaBackdropNoLogo.png);
     /*-fx-second-graphic: url(jug-bodensee-logo-A-gross-white.png);*/
     -fx-display-tag-num: 25;
     /*-fx-font: 12pt "BebasNeue";*/
