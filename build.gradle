@@ -324,26 +324,28 @@ allprojects {
             errorprone 'com.google.errorprone:error_prone_core:2.21.1'
         }
 
-        // configuring Spotbugs
-        apply plugin: 'com.github.spotbugs'
+        if (System.env.CI || project.findProperty('applySpotbugs')) {
+            // configuring Spotbugs
+            apply plugin: 'com.github.spotbugs'
 
-        tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
-            // fail build in case a failure was detected
-            ignoreFailures = false
+            tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+                // fail build in case a failure was detected
+                ignoreFailures = false
 
-            jvmArgs.add '--module-path'
-            jvmArgs.add getJvmModulePath()
-            jvmArgs.add '--add-modules'
-            jvmArgs.add getJvmAdditionalModules()
+                jvmArgs.add '--module-path'
+                jvmArgs.add getJvmModulePath()
+                jvmArgs.add '--add-modules'
+                jvmArgs.add getJvmAdditionalModules()
 
-            excludeFilter = rootProject.file('spotbugs-exclude.xml')
+                excludeFilter = rootProject.file('spotbugs-exclude.xml')
 
-            reports {
-                xml.required.set(false)
-                html.required.set(true)
+                reports {
+                    xml.required.set(false)
+                    html.required.set(true)
+                }
+
+                auxClassPaths = auxClassPaths + configurations.javafx + configurations.jaxb
             }
-
-            auxClassPaths = auxClassPaths + configurations.javafx + configurations.jaxb
         }
 
         // configuring Versions plugin
