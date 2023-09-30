@@ -32,8 +32,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
 import jakarta.ws.rs.core.GenericType;
@@ -177,18 +179,38 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<RatedTalk> getRatedTalks(final String conferenceDay) {
-        return getVotingResults().entrySet().stream()
+        if (Boolean.getBoolean("org.tweetwallfx.conference.randomTalks")) {
+            System.out.println("######## randomizedRatedTalksPerDay");
+            return randomizedRatedTalks();
+        } else {
+            return getVotingResults().entrySet().stream()
                 .filter(e -> e.getKey().dayId().equals(conferenceDay))
                 .map(Map.Entry::getValue)
                 .findFirst()
                 .orElse(List.of());
+        }
     }
 
     @Override
     public List<RatedTalk> getRatedTalksOverall() {
-        return getVotingResults().entrySet().stream()
+        if (Boolean.getBoolean("org.tweetwallfx.conference.randomTalks")) {
+            System.out.println("######## randomizedRatedTalksWeek");
+            return randomizedRatedTalks();
+        } else {
+            return getVotingResults().entrySet().stream()
                 .map(Map.Entry::getValue)
                 .flatMap(List::stream)
+                .toList();
+        }
+    }
+
+    private List<RatedTalk> randomizedRatedTalks() {
+        System.out.println("######## randomizedRatedTalks");
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "talks", listOfMaps())
+                .orElse(List.of())
+                .stream()
+                .filter(talk -> RandomGenerator.getDefault().nextBoolean())
+                .map(this::convertTalkToRatedTalk)
                 .toList();
     }
 
@@ -226,6 +248,15 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
                                                 .map(o -> (Map<String, Object>) o)
                                                 .map(this::convertRatedTalk)
                                                 .toList()))));
+    }
+
+    private RatedTalk convertTalkToRatedTalk(final Map<String, Object> input) {
+        LOG.debug("Converting Talk to RatedTalk: {}", input);
+        return RatedTalkImpl.builder()
+                .withAverageRating(RandomGenerator.getDefault().nextDouble(5))
+                .withTotalRating(RandomGenerator.getDefault().nextInt(200))
+                .withTalk(convertTalk(input))
+                .build();
     }
 
     private RatedTalk convertRatedTalk(final Map<String, Object> input) {

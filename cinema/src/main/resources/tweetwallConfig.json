@@ -59,6 +59,12 @@
                 }
             },
             {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#topRatedToday"
+                }
+            },
+            {
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
                 "config": {
                     "layoutX": 35,
@@ -107,6 +113,12 @@
                 "config": {
                     "unit": "SECONDS",
                     "amount": "15"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#topRatedWeek"
                 }
             }
         ]
