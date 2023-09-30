@@ -33,44 +33,6 @@
                 "config": {
                     "nodeSelector": "#scheduleNode"
                 }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.FadeInCloudStep",
-                "config": {
-                    "layoutX": 1100,
-                    "layoutY": 300,
-                    "width": 800,
-                    "height": 600,
-                    "stepDuration": 30000
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.stepengine.steps.NextTweetStep"
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.AddTweetToCloudStep"
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.CloudToCloudStep"
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.CloudToTweetStep"
-            },
-            {
-                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
-                "config": {
-                    "amount": 5,
-                    "unit": "SECONDS"
-                }
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.TweetToCloudStep"
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.CloudFadeOutStep"
-            },
-            {
-                "stepClassName": "org.tweetwallfx.controls.steps.ImageMosaicStep"
             }
         ]
     }
