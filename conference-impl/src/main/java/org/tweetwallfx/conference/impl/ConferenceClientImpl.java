@@ -25,9 +25,12 @@ package org.tweetwallfx.conference.impl;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -116,7 +119,9 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<ScheduleSlot> getSchedule(final String conferenceDay, final String roomName) {
-        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "schedules/" + conferenceDay + '/' + roomName, listOfMaps())
+        return RestCallHelper
+                .readOptionalFrom(config.getEventBaseUri() + "schedules/" + conferenceDay + '/' + roomName,
+                        listOfMaps())
                 .orElse(List.of())
                 .stream()
                 .map(this::convertScheduleSlot)
@@ -125,7 +130,10 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<Speaker> getSpeakers() {
-        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps(), (a, b) -> {a.addAll(b); return a;})
+        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps(), (a, b) -> {
+            a.addAll(b);
+            return a;
+        })
                 .orElse(List.of())
                 .stream()
                 .map(this::convertSpeaker)
@@ -161,26 +169,38 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
     @Override
     public Optional<RatingClient> getRatingClient() {
         return Optional.of(config)
-                .map(ConferenceClientSettings::getVotingResultsToken)
+                .filter(ccs -> Objects.nonNull(ccs.getVotingResultsUri()))
+                .filter(ccs -> Objects.nonNull(ccs.getVotingResultsToken()))
+                .filter(ccs -> Objects.nonNull(ccs.getVotingResultsEvent()))
                 .map(_ignored_ -> this);
     }
 
     @Override
     public List<RatedTalk> getRatedTalks(final String conferenceDay) {
-        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "ratings/" + conferenceDay.toLowerCase(Locale.ENGLISH).substring(0, 3) + '/' + config.getVotingResultsToken(), listOfMaps())
-                .orElse(List.of())
-                .stream()
-                .map(this::convertRatedTalk)
-                .toList();
+        return getVotingResults().entrySet().stream()
+                .filter(e -> e.getKey().dayId().equals(conferenceDay))
+                .map(Map.Entry::getValue)
+                .findFirst()
+                .orElse(List.of());
     }
 
     @Override
     public List<RatedTalk> getRatedTalksOverall() {
-        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "ratings/" + config.getVotingResultsToken(), listOfMaps())
-                .orElse(List.of())
-                .stream()
-                .map(this::convertRatedTalk)
+        return getVotingResults().entrySet().stream()
+                .map(Map.Entry::getValue)
+                .flatMap(List::stream)
                 .toList();
+    }
+
+    private Map<WeekDay, List<RatedTalk>> getVotingResults() {
+        return RestCallHelper.getOptionalResponse(
+                config.getVotingResultsUri(),
+                Map.of(
+                        "eventId", config.getVotingResultsEvent(),
+                        "publicToken", config.getVotingResultsToken()))
+                .flatMap(r -> RestCallHelper.readOptionalFrom(r, map()))
+                .map(this::convertTalkRatings)
+                .orElse(Map.of());
     }
 
     private static GenericType<List<Map<String, Object>>> listOfMaps() {
@@ -193,12 +213,28 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
         };
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<WeekDay, List<RatedTalk>> convertTalkRatings(final Map<String, Object> input) {
+        LOG.debug("Converting TalkRatings: {}", input);
+        return retrieveValue(input, "dailyTalksStats", List.class,
+                dailyTalksStatsList -> ((List<?>) dailyTalksStatsList).stream()
+                        .map(o -> (Map<String, Object>) o)
+                        .collect(Collectors.toMap(
+                                dailyStats -> retrieveValue(dailyStats, "date", String.class, WeekDay::of),
+                                dailyStats -> retrieveValue(dailyStats, "topTalks", List.class,
+                                        topTalksList -> ((List<?>) topTalksList).stream()
+                                                .map(o -> (Map<String, Object>) o)
+                                                .map(this::convertRatedTalk)
+                                                .toList()))));
+    }
+
     private RatedTalk convertRatedTalk(final Map<String, Object> input) {
         LOG.debug("Converting to RatedTalk: {}", input);
         return RatedTalkImpl.builder()
-                .withAverageRating(retrieveValue(input, "avgRatings", Number.class, Number::doubleValue))
-                .withTotalRating(retrieveValue(input, "totalRatings", Number.class, Number::intValue))
-                .withTalk(retrieveValue(input, "id", Integer.class, talkId -> getTalk(Integer.toString(talkId)).get()))
+                .withAverageRating(retrieveValue(input, "averageRating", Number.class, Number::doubleValue))
+                .withTotalRating(retrieveValue(input, "numberOfVotes", Number.class, Number::intValue))
+                .withTalk(retrieveValue(input, "talkId", String.class,
+                        talkId -> getTalk(talkId).get()))
                 .build();
     }
 
@@ -324,7 +360,8 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
         return type.cast(data.get(key));
     }
 
-    private static <T, R> R retrieveValue(final Map<String, Object> data, final String key, final Class<T> type, final Function<T, R> converter) {
+    private static <T, R> R retrieveValue(final Map<String, Object> data, final String key, final Class<T> type,
+            final Function<T, R> converter) {
         final T t = retrieveValue(data, key, type);
         return null == t
                 ? null
@@ -346,5 +383,12 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
         }
 
         return null;
+    }
+
+    protected static record WeekDay(String dayId) {
+
+        static WeekDay of(String date) {
+            return new WeekDay(LocalDate.parse(date).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        }
     }
 }
