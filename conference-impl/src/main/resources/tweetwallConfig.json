@@ -1,6 +1,7 @@
 {
     "conferenceClient": {
         "eventBaseUri": "https://dvbe23.cfp.dev/api/public",
-        "votingResultsToken": "PutYourActualTokenHere"
+        "votingResultsUri": "https://us-central1-voxxrin-v3.cloudfunctions.net/publicEventStats",
+        "votingResultsEvent": "dvbe23"
     }
 }

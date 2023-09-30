@@ -41,7 +41,9 @@ public class ConferenceClientSettings {
      */
     public static final String CONFIG_KEY = "conferenceClient";
     private String eventBaseUri;
+    private String votingResultsUri;
     private String votingResultsToken;
+    private String votingResultsEvent;
 
     /**
      * Returns the Event Base URI from where all standard calls are executed.
@@ -65,9 +67,7 @@ public class ConferenceClientSettings {
     }
 
     /**
-     * Returns the Token required to retrieve voting results.
-     *
-     * @return the voting result token
+     * {@return the Token required to retrieve voting results.}
      */
     public String getVotingResultsToken() {
         return votingResultsToken;
@@ -83,12 +83,48 @@ public class ConferenceClientSettings {
         this.votingResultsToken = votingResultsToken;
     }
 
+    /**
+     * {@return the URI to retrieve voting results from.}
+     */
+    public String getVotingResultsUri() {
+        return votingResultsUri;
+    }
+
+    /**
+     * Sets the URI to retrieve voting results from.
+     *
+     * @param votingResultsUri the voting result URI
+     */
+    public void setVotingResultsUri(String votingResultsUri) {
+        Objects.requireNonNull(votingResultsUri, "votingResultsUri must not be null!");
+        this.votingResultsUri = votingResultsUri;
+    }
+
+    /**
+     * {@return the voting results event id.}
+     */
+    public String getVotingResultsEvent() {
+        return votingResultsEvent;
+    }
+
+    /**
+     * Sets the voting results event id.
+     *
+     * @param votingResultsEvent the voting result event id
+     */
+    public void setVotingResultsEvent(String votingResultsEvent) {
+        Objects.requireNonNull(votingResultsEvent, "votingResultsEvent must not be null!");
+        this.votingResultsEvent = votingResultsEvent;
+    }
+
     @Override
     public String toString() {
         return createToString(this, map(
                 "eventBaseUri", getEventBaseUri(),
-                "votingResultsToken", getVotingResultsToken()
-        )) + " extends " + super.toString();
+                "votingResultsToken", getVotingResultsToken(),
+                "votingResultsUri", getVotingResultsUri(),
+                "votingResultsEvent", getVotingResultsEvent()
+                ));
     }
 
     /**
