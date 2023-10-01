@@ -179,7 +179,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<RatedTalk> getRatedTalks(final String conferenceDay) {
-        if (Boolean.getBoolean("org.tweetwallfx.conference.randomTalks")) {
+        if (Boolean.getBoolean("org.tweetwallfx.conference.randomRatedTalks")) {
             System.out.println("######## randomizedRatedTalksPerDay");
             return randomizedRatedTalks();
         } else {
@@ -193,7 +193,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<RatedTalk> getRatedTalksOverall() {
-        if (Boolean.getBoolean("org.tweetwallfx.conference.randomTalks")) {
+        if (Boolean.getBoolean("org.tweetwallfx.conference.randomRatedTalks")) {
             System.out.println("######## randomizedRatedTalksWeek");
             return randomizedRatedTalks();
         } else {
