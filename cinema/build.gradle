@@ -31,6 +31,7 @@ application {
 tasks.withType(JavaExec).configureEach {
 //    jvmArgs '-Dorg.tweetwallfx.scheduledata.day=friday'
 //    jvmArgs '-Dorg.tweetwallfx.scheduledata.time=10:00Z'
+//    jvmArgs '-Dorg.tweetwallfx.conference.randomRatedTalks=true'
 }
 
 tasks.register('debug', JavaExec) {
