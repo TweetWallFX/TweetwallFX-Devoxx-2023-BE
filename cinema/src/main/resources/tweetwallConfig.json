@@ -51,6 +51,28 @@
                 }
             },
             {
+                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
+                "config": {
+                    "layoutX": 35,
+                    "layoutY": 140,
+                    "topVotedType": "TODAY",
+                    "stepDuration": 500
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
+                "config": {
+                    "unit": "SECONDS",
+                    "amount": "15"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#topRatedToday"
+                }
+            },
+            {
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
                 "config": {
                     "layoutX": 35,
@@ -83,6 +105,28 @@
                 "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
                 "config": {
                     "nodeSelector": "#scheduleNode"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
+                "config": {
+                    "layoutX": 35,
+                    "layoutY": 140,
+                    "topVotedType": "WEEK",
+                    "stepDuration": 500
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
+                "config": {
+                    "unit": "SECONDS",
+                    "amount": "15"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#topRatedWeek"
                 }
             }
         ]
