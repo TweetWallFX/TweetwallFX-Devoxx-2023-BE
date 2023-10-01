@@ -33,7 +33,7 @@
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
-                    "amount": 10,
+                    "amount": 15,
                     "unit": "SECONDS"
                 }
             },

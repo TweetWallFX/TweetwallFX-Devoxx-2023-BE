@@ -41,7 +41,7 @@
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
                     "unit": "SECONDS",
-                    "amount": "5"
+                    "amount": "15"
                 }
             },
             {
@@ -101,7 +101,7 @@
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
                     "unit": "SECONDS",
-                    "amount": "60"
+                    "amount": "15"
                 }
             },
             {
