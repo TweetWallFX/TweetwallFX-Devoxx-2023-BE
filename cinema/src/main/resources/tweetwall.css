@@ -173,7 +173,25 @@
     -fx-font-size: 10pt;
 }
 
+.votedTalk .ratingAverageScore {
+    -fx-text-fill: blanchedalmond;
+    -fx-font-weight: bold;
+    -fx-font-size: 14pt;
+}
+
+.votedTalk .ratingTotalVotes {
+    -fx-text-fill: blanchedalmond;
+    -fx-font-weight: normal;
+    -fx-font-size: 10pt;
+}
+
 .scheduleSession > .sessionBottomPane > .centerFlow .emojiFlow {
+    -fx-fill: blanchedalmond;
+    -fx-font-size: 15pt;
+    -fx-font-weight: bold;
+}
+
+.votedTalk .emojiFlow {
     -fx-fill: blanchedalmond;
     -fx-font-size: 15pt;
     -fx-font-weight: bold;
@@ -183,7 +201,16 @@
     -fx-alignment: "top-right"
 }
 
+.votedTalk > .sessionTopPane > .speakerNames {
+    -fx-alignment: "top-right"
+}
+
 .scheduleSession > .sessionTopPane > .speakerNames > .speakerName {
+    -fx-text-fill: blanchedalmond;
+    -fx-font-size: 11pt;
+}
+
+.votedTalk > .sessionTopPane > .speakerNames > .speakerName {
     -fx-text-fill: blanchedalmond;
     -fx-font-size: 11pt;
 }
@@ -205,6 +232,14 @@
 }
 
 .schedule > .title {
+    -fx-background-color: devoxx_gradient_opaque;
+    -fx-background-radius: 10;
+    -fx-text-fill: blanchedalmond;
+    -fx-font-size: 20pt;
+    -fx-font-weight: bold;
+}
+
+.votedTalk > .title {
     -fx-background-color: devoxx_gradient_opaque;
     -fx-background-radius: 10;
     -fx-text-fill: blanchedalmond;
