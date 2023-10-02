@@ -59,14 +59,16 @@
                     "talkHeight": 125,
                     "talkVGap": 5,
                     "topVotedType": "TODAY",
-                    "stepDuration": 500
+                    "stepDuration": 500,
+                    "skipTokenValue": "TopRatedToday"
                 }
             },
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
                     "unit": "SECONDS",
-                    "amount": "15"
+                    "amount": "15",
+                    "skipWhenSkipped": "TopRatedToday"
                 }
             },
             {
@@ -119,14 +121,16 @@
                     "talkHeight": 125,
                     "talkVGap": 5,
                     "topVotedType": "WEEK",
-                    "stepDuration": 500
+                    "stepDuration": 500,
+                    "skipTokenValue": "TopRatedWeek"
                 }
             },
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
                     "unit": "SECONDS",
-                    "amount": "15"
+                    "amount": "15",
+                    "skipWhenSkipped": "TopRatedWeek"
                 }
             },
             {
