@@ -180,7 +180,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
     @Override
     public List<RatedTalk> getRatedTalks(final String conferenceDay) {
         if (Boolean.getBoolean("org.tweetwallfx.conference.randomRatedTalks")) {
-            System.out.println("######## randomizedRatedTalksPerDay");
+            LOG.debug("######## randomizedRatedTalksPerDay");
             return randomizedRatedTalks();
         } else {
             return getVotingResults().entrySet().stream()
@@ -194,7 +194,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
     @Override
     public List<RatedTalk> getRatedTalksOverall() {
         if (Boolean.getBoolean("org.tweetwallfx.conference.randomRatedTalks")) {
-            System.out.println("######## randomizedRatedTalksWeek");
+            LOG.debug("######## randomizedRatedTalksWeek");
             return randomizedRatedTalks();
         } else {
             return getVotingResults().entrySet().stream()
@@ -205,7 +205,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
     }
 
     private List<RatedTalk> randomizedRatedTalks() {
-        System.out.println("######## randomizedRatedTalks");
+        LOG.debug("######## randomizedRatedTalks");
         return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "talks", listOfMaps())
                 .orElse(List.of())
                 .stream()
