@@ -173,7 +173,7 @@
     -fx-font-size: 10pt;
 }
 
-.scheduleSession > .sessionBottomPane > .centerFlow .emojiFlow {
+.scheduleSession .emojiFlow {
     -fx-fill: blanchedalmond;
     -fx-font-size: 15pt;
     -fx-font-weight: bold;
