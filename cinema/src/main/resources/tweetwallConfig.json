@@ -113,6 +113,19 @@
                 }
             },
             {
+                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.SpeakerImageMosaicStep",
+                "config": {
+                    "stepDuration": 10000,
+                    "zoomDurationAnimation": 1500,
+                    "layoutX": 35,
+                    "layoutY": 165,
+                    "width": 1860,
+                    "height": 900,
+                    "columns": 14,
+                    "rows": 8
+                }
+            },
+            {
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
                 "config": {
                     "layoutX": 35,
