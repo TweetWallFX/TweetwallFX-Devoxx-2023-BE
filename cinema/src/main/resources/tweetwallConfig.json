@@ -19,7 +19,7 @@
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
                 "config": {
                     "layoutX": 35,
-                    "layoutY": 215,
+                    "layoutY": 165,
                     "width": 1860,
                     "sessionHeight": 200,
                     "showAvatar": true,
@@ -54,7 +54,7 @@
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
                 "config": {
                     "layoutX": 35,
-                    "layoutY": 215,
+                    "layoutY": 165,
                     "width": 800,
                     "talkHeight": 125,
                     "talkVGap": 5,
@@ -79,7 +79,7 @@
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
                 "config": {
                     "layoutX": 35,
-                    "layoutY": 215,
+                    "layoutY": 165,
                     "width": 1860,
                     "sessionHeight": 200,
                     "showAvatar": true,
@@ -114,7 +114,7 @@
                 "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
                 "config": {
                     "layoutX": 35,
-                    "layoutY": 215,
+                    "layoutY": 165,
                     "width": 800,
                     "talkHeight": 125,
                     "talkVGap": 5,
