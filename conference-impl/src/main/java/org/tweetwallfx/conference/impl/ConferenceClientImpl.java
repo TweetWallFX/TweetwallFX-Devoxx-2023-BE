@@ -183,11 +183,18 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
             System.out.println("######## randomizedRatedTalksPerDay");
             return randomizedRatedTalks();
         } else {
-            return getVotingResults().entrySet().stream()
-                .filter(e -> e.getKey().dayId().equals(conferenceDay))
-                .map(Map.Entry::getValue)
-                .findFirst()
-                .orElse(List.of());
+            final Map<WeekDay, List<RatedTalk>> votingResults = getVotingResults();
+
+            return votingResults.entrySet().stream()
+                    .filter(e -> e.getKey().dayId().equals(conferenceDay))
+                    .map(Map.Entry::getValue)
+                    .findFirst()
+                    .orElseGet(() -> {
+                        LOG.warn(
+                                "Lookup of voting results for conferenceDay='{}' failed among the following keySet: {}",
+                                conferenceDay, votingResults.keySet());
+                        return List.of();
+                    });
         }
     }
 
@@ -419,7 +426,9 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
     protected static record WeekDay(String dayId) {
 
         static WeekDay of(String date) {
-            return new WeekDay(LocalDate.parse(date).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+            return new WeekDay(LocalDate.parse(date).getDayOfWeek()
+                    .getDisplayName(TextStyle.FULL, Locale.ENGLISH)
+                    .toLowerCase(Locale.ENGLISH));
         }
     }
 }
