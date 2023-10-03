@@ -35,6 +35,7 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
@@ -62,6 +63,7 @@ import org.tweetwallfx.conference.spi.TalkImpl;
 import org.tweetwallfx.conference.spi.TrackImpl;
 import org.tweetwallfx.conference.spi.util.RestCallHelper;
 import org.tweetwallfx.config.Configuration;
+import org.tweetwallfx.util.ExpiringValue;
 
 public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
@@ -70,6 +72,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
     private final Map<String, SessionType> sessionTypes;
     private final Map<String, Room> rooms;
     private final Map<String, Track> tracks;
+    private final ExpiringValue<Map<WeekDay, List<RatedTalk>>> ratedTalks;
 
     public ConferenceClientImpl() {
         this.config = Configuration.getInstance().getConfigTyped(
@@ -93,6 +96,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
                 .map(this::convertTrack)
                 .collect(Collectors.toMap(Identifiable::getId, Function.identity()));
         LOG.info("Track IDs: {}", tracks.keySet());
+        this.ratedTalks = new ExpiringValue<>(this::getVotingResults, Duration.ofSeconds(20));
     }
 
     @Override
@@ -132,10 +136,11 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     @Override
     public List<Speaker> getSpeakers() {
-        return RestCallHelper.readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps(), (a, b) -> {
-            a.addAll(b);
-            return a;
-        })
+        return RestCallHelper
+                .readOptionalFrom(config.getEventBaseUri() + "speakers", listOfMaps(), (a, b) -> {
+                    a.addAll(b);
+                    return a;
+                })
                 .orElse(List.of())
                 .stream()
                 .map(this::convertSpeaker)
@@ -183,7 +188,7 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
             LOG.debug("######## randomizedRatedTalksPerDay");
             return randomizedRatedTalks();
         } else {
-            final Map<WeekDay, List<RatedTalk>> votingResults = getVotingResults();
+            final Map<WeekDay, List<RatedTalk>> votingResults = ratedTalks.getValue();
 
             return votingResults.entrySet().stream()
                     .filter(e -> e.getKey().dayId().equals(conferenceDay))
@@ -204,10 +209,10 @@ public class ConferenceClientImpl implements ConferenceClient, RatingClient {
             LOG.debug("######## randomizedRatedTalksWeek");
             return randomizedRatedTalks();
         } else {
-            return getVotingResults().entrySet().stream()
-                .map(Map.Entry::getValue)
-                .flatMap(List::stream)
-                .toList();
+            return ratedTalks.getValue().entrySet().stream()
+                    .map(Map.Entry::getValue)
+                    .flatMap(List::stream)
+                    .toList();
         }
     }
 
