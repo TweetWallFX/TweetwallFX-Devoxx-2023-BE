@@ -187,13 +187,13 @@
 
 .scheduleSession > .sessionBottomPane > .centerFlow .emojiFlow {
     -fx-fill: blanchedalmond;
-    -fx-font-size: 15pt;
+    -fx-font-size: 13pt;
     -fx-font-weight: bold;
 }
 
 .votedTalk .emojiFlow {
     -fx-fill: blanchedalmond;
-    -fx-font-size: 15pt;
+    -fx-font-size: 13pt;
     -fx-font-weight: bold;
 }
 
@@ -258,7 +258,7 @@
 }
 
 .scheduleSession .sessionBottomPane .centerFlow .tagPane .tags .tagLabel {
-    -fx-font-size: 10pt;
+    -fx-font-size: 9pt;
     -fx-text-fill: blanchedalmond;
  /*   -fx-text-fill: #e55630; */
  /*   -fx-background-color: black; */
