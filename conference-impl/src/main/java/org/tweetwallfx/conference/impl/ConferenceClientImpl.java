@@ -65,7 +65,7 @@ import org.tweetwallfx.conference.spi.util.RestCallHelper;
 import org.tweetwallfx.config.Configuration;
 import org.tweetwallfx.util.ExpiringValue;
 
-public class ConferenceClientImpl implements ConferenceClient, RatingClient {
+public final class ConferenceClientImpl implements ConferenceClient, RatingClient {
 
     private static final Logger LOG = LoggerFactory.getLogger(ConferenceClientImpl.class);
     private final ConferenceClientSettings config;
