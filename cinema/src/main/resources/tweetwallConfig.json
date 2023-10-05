@@ -40,8 +40,8 @@
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
-                    "unit": "SECONDS",
-                    "amount": "15"
+                    "amount": 15,
+                    "unit": "SECONDS"
                 }
             },
             {
@@ -66,8 +66,8 @@
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
-                    "unit": "SECONDS",
                     "amount": "15",
+                    "unit": "SECONDS",
                     "skipWhenSkipped": "TopRatedToday"
                 }
             },
@@ -102,8 +102,8 @@
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
-                    "unit": "SECONDS",
-                    "amount": "15"
+                    "amount": 15,
+                    "unit": "SECONDS"
                 }
             },
             {
@@ -128,8 +128,8 @@
             {
                 "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
                 "config": {
-                    "unit": "SECONDS",
                     "amount": "15",
+                    "unit": "SECONDS",
                     "skipWhenSkipped": "TopRatedWeek"
                 }
             },

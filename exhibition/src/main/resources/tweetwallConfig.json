@@ -21,6 +21,7 @@
                 "config": {
                     "layoutX": 103,
                     "layoutY": 200,
+                    "width": 800,
                     "sessionHeight": 150,
                     "showAvatar": true,
                     "avatarArcSize": 16,
@@ -41,6 +42,88 @@
                 "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
                 "config": {
                     "nodeSelector": "#scheduleNode"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
+                "config": {
+                    "layoutX": 103,
+                    "layoutY": 200,
+                    "width": 800,
+                    "talkHeight": 125,
+                    "talkVGap": 5,
+                    "topVotedType": "TODAY",
+                    "stepDuration": 500,
+                    "skipTokenValue": "TopRatedToday"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
+                "config": {
+                    "amount": "15",
+                    "unit": "SECONDS",
+                    "skipWhenSkipped": "TopRatedToday"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#topRatedeNode"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowSchedule",
+                "config": {
+                    "layoutX": 103,
+                    "layoutY": 200,
+                    "width": 800,
+                    "sessionHeight": 150,
+                    "showAvatar": true,
+                    "avatarArcSize": 16,
+                    "avatarSize": 50,
+                    "avatarSpacing": 4,
+                    "showFavourite": true,
+                    "stepDuration": 500
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
+                "config": {
+                    "amount": 15,
+                    "unit": "SECONDS"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#scheduleNode"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.conference.stepengine.steps.ShowTopRated",
+                "config": {
+                    "layoutX": 103,
+                    "layoutY": 200,
+                    "width": 800,
+                    "talkHeight": 125,
+                    "talkVGap": 5,
+                    "topVotedType": "WEEK",
+                    "stepDuration": 500,
+                    "skipTokenValue": "TopRatedWeek"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.stepengine.steps.PauseStep",
+                "config": {
+                    "amount": "15",
+                    "unit": "SECONDS",
+                    "skipWhenSkipped": "TopRatedWeek"
+                }
+            },
+            {
+                "stepClassName": "org.tweetwallfx.controls.steps.NodeFadeOutStep",
+                "config": {
+                    "nodeSelector": "#topRatedeNode"
                 }
             }
         ]
