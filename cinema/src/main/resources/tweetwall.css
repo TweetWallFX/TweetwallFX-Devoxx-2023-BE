@@ -197,6 +197,12 @@
     -fx-font-weight: bold;
 }
 
+.scheduleSession .emojiFlow {
+    -fx-fill: blanchedalmond;
+    -fx-font-size: 13pt;
+    -fx-font-weight: bold;
+}
+
 .scheduleSession > .sessionTopPane > .speakerNames {
     -fx-alignment: "top-right"
 }
