@@ -32,10 +32,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.random.RandomGenerator;
 import java.util.stream.Collectors;
 
@@ -72,6 +71,7 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
     private final Map<String, SessionType> sessionTypes;
     private final Map<String, Room> rooms;
     private final Map<String, Track> tracks;
+    private final Map<String, Integer> talkFavoriteCounts = new TreeMap<>();
     private final ExpiringValue<Map<WeekDay, List<RatedTalk>>> ratedTalks;
 
     public ConferenceClientImpl() {
@@ -97,6 +97,9 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
                 .collect(Collectors.toMap(Identifiable::getId, Function.identity()));
         LOG.info("Track IDs: {}", tracks.keySet());
         this.ratedTalks = new ExpiringValue<>(this::getVotingResults, Duration.ofSeconds(20));
+
+        // trigger initialization of ratedTalks
+        LOG.trace("Initialized ratedTalks: {}", ratedTalks.getValue());
     }
 
     @Override
@@ -173,12 +176,16 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
         return List.copyOf(tracks.values());
     }
 
-    @Override
-    public Optional<RatingClient> getRatingClient() {
+    private Optional<ConferenceClientSettings> getRatingClientEnabledConfig() {
         return Optional.of(config)
                 .filter(ccs -> Objects.nonNull(ccs.getVotingResultsUri()))
                 .filter(ccs -> Objects.nonNull(ccs.getVotingResultsToken()))
-                .filter(ccs -> Objects.nonNull(ccs.getVotingResultsEvent()))
+                .filter(ccs -> Objects.nonNull(ccs.getVotingResultsEvent()));
+    }
+
+    @Override
+    public Optional<RatingClient> getRatingClient() {
+        return getRatingClientEnabledConfig()
                 .map(_ignored_ -> this);
     }
 
@@ -227,14 +234,17 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
     }
 
     private Map<WeekDay, List<RatedTalk>> getVotingResults() {
-        return RestCallHelper.getOptionalResponse(
-                config.getVotingResultsUri(),
-                Map.of(
-                        "eventId", config.getVotingResultsEvent(),
-                        "publicToken", config.getVotingResultsToken()))
+        LOG.info("Loading PublicEventStats", new IllegalArgumentException("Loading PublicEventStats"));
+
+        return getRatingClientEnabledConfig()
+                .flatMap(_ignored -> RestCallHelper.getOptionalResponse(
+                        config.getVotingResultsUri(),
+                        Map.of(
+                                "eventId", config.getVotingResultsEvent(),
+                                "publicToken", config.getVotingResultsToken())))
                 .flatMap(r -> RestCallHelper.readOptionalFrom(r, map()))
-                .map(this::convertTalkRatings)
-                .orElse(Map.of());
+                .map(this::convertPublicEventStats)
+                .orElseGet(Map::of);
     }
 
     private static GenericType<List<Map<String, Object>>> listOfMaps() {
@@ -248,8 +258,22 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
     }
 
     @SuppressWarnings("unchecked")
-    private Map<WeekDay, List<RatedTalk>> convertTalkRatings(final Map<String, Object> input) {
-        LOG.debug("Converting TalkRatings: {}", input);
+    private Map<WeekDay, List<RatedTalk>> convertPublicEventStats(final Map<String, Object> input) {
+        LOG.debug("Converting PublicEventStats: {}", input);
+
+        final Map<String, Integer> tfcs = retrieveValue(input, "perTalkStats", List.class,
+                perTalkStatsList -> ((List<?>) perTalkStatsList).stream()
+                        .map(o -> (Map<String, Object>) o)
+                        .collect(Collectors.toMap(
+                                perTalkStats -> retrieveValue(perTalkStats, "talkId", String.class),
+                                perTalkStats -> retrieveValue(perTalkStats, "totalFavoritesCount", Number.class,
+                                        Number::intValue))));
+
+        if (null != tfcs && !tfcs.isEmpty()) {
+            this.talkFavoriteCounts.putAll(tfcs);
+            LOG.info("Updated talkFavoriteCounts to: {}", talkFavoriteCounts);
+        }
+
         return retrieveValue(input, "dailyTalksStats", List.class,
                 dailyTalksStatsList -> ((List<?>) dailyTalksStatsList).stream()
                         .map(o -> (Map<String, Object>) o)
@@ -353,8 +377,9 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
     @SuppressWarnings("unchecked")
     private Talk convertTalk(final Map<String, Object> input) {
         LOG.debug("Converting to Talk: {}", input);
+        String talkId = retrieveValue(input, "id", Number.class, Number::toString);
         return TalkImpl.builder()
-                .withId(retrieveValue(input, "id", Number.class, Number::toString))
+                .withId(talkId)
                 .withName(retrieveValue(input, "title", String.class))
                 .withAudienceLevel(retrieveValue(input, "audienceLevel", String.class))
                 .withSessionType(sessionTypes.get(alternatives(
@@ -363,7 +388,11 @@ public final class ConferenceClientImpl implements ConferenceClient, RatingClien
                         // or by having the session type object as value
                         retrieveValue(input, "sessionType", Map.class,
                                 m -> retrieveValue(m, "id", Number.class, Number::toString)))))
-                .withFavoriteCount(retrieveValue(input, "totalFavourites", Number.class, Number::intValue))
+                .withFavoriteCount(alternatives(
+                        // if value is available from public event stats
+                        talkFavoriteCounts.get(talkId),
+                        // otherwise fall back to value from talk
+                        retrieveValue(input, "totalFavourites", Number.class, Number::intValue)))
                 .withLanguage(Locale.ENGLISH)
                 .withScheduleSlots(retrieveValue(input, "timeSlots", List.class,
                         list -> ((List<?>) list).stream()
