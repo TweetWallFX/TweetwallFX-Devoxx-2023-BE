@@ -164,42 +164,42 @@
 .scheduleSession .room {
     -fx-text-fill: blanchedalmond;
     -fx-font-weight: bold;
-    -fx-font-size: 14pt;
+    -fx-font-size: 15pt;
 }
 
 .scheduleSession .times {
     -fx-text-fill: blanchedalmond;
     -fx-font-weight: normal;
-    -fx-font-size: 10pt;
+    -fx-font-size: 11pt;
 }
 
 .votedTalk .ratingAverageScore {
     -fx-text-fill: blanchedalmond;
     -fx-font-weight: bold;
-    -fx-font-size: 14pt;
+    -fx-font-size: 15pt;
 }
 
 .votedTalk .ratingTotalVotes {
     -fx-text-fill: blanchedalmond;
     -fx-font-weight: normal;
-    -fx-font-size: 10pt;
+    -fx-font-size: 11pt;
 }
 
 .scheduleSession > .sessionBottomPane > .centerFlow .emojiFlow {
     -fx-fill: blanchedalmond;
-    -fx-font-size: 13pt;
+    -fx-font-size: 15pt;
     -fx-font-weight: bold;
 }
 
 .votedTalk .emojiFlow {
     -fx-fill: blanchedalmond;
-    -fx-font-size: 13pt;
+    -fx-font-size: 15pt;
     -fx-font-weight: bold;
 }
 
 .scheduleSession .emojiFlow {
     -fx-fill: blanchedalmond;
-    -fx-font-size: 13pt;
+    -fx-font-size: 15pt;
     -fx-font-weight: bold;
 }
 
@@ -218,23 +218,18 @@
 
 .votedTalk > .sessionTopPane > .speakerNames > .speakerName {
     -fx-text-fill: blanchedalmond;
-    -fx-font-size: 11pt;
-}
-
-.scheduleSession > .sessionTopPane > .speakerNames > .companyName {
-    -fx-text-fill: blanchedalmond;
-    -fx-font-size: 8pt;
+    -fx-font-size: 12pt;
 }
 
 .scheduleSession .favoriteGlyph {
     -glyph-name: "HEART";
-    -glyph-size: 10pt;
+    -glyph-size: 11pt;
     -fx-fill: blanchedalmond;
 }
 
 .scheduleSession .favoriteCount {
     -fx-text-fill: blanchedalmond;
-    -fx-font-size: 10pt;
+    -fx-font-size: 11pt;
 }
 
 .schedule > .title {
@@ -255,22 +250,4 @@
 
 .scheduleSession .sessionBottomPane .centerFlow {
     -fx-spacing: 3pt;
-}
-
-.scheduleSession .sessionBottomPane .centerFlow .tagPane .tags  {
-    -fx-hgap: 8pt;
-    -fx-vgap: 4pt;
-    -fx-padding: 0 0 0 4;
-}
-
-.scheduleSession .sessionBottomPane .centerFlow .tagPane .tags .tagLabel {
-    -fx-font-size: 9pt;
-    -fx-text-fill: blanchedalmond;
- /*   -fx-text-fill: #e55630; */
- /*   -fx-background-color: black; */
-    -fx-border-color: blanchedalmond;
-    -fx-border-radius: 5 0 5 0;
-    -fw-border-with: 2pt;
-    -fx-background-radius: 5 5 5 5;
-    -fx-border-insets: -1 -4 -1 -4;
 }
